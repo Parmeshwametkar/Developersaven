@@ -12,9 +12,23 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({ isOp
   if (!isOpen) return null;
 
   const handleCopy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 1500);
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 1500);
+    } catch {
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 1500);
+    }
   };
 
   const sqlSchema = `-- Run this in Supabase SQL Editor:

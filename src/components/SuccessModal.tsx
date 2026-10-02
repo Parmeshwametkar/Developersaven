@@ -11,9 +11,22 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({ inquiryId, payload, 
   const [copied, setCopied] = useState(false);
 
   const handleCopyId = () => {
-    navigator.clipboard.writeText(inquiryId);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(inquiryId);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = inquiryId;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(true);
+    }
   };
 
   const directMailSubject = encodeURIComponent(`Project Inquiry: ${payload?.project_title || 'Project'} [${inquiryId}]`);
