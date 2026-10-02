@@ -1,0 +1,6 @@
+{
+  "name": "Developersaven",
+  "description": "Developersaven builds modern websites, web applications, software applications and custom digital solutions for startups and businesses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
